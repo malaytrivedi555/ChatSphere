@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Depth layers */
+    --cs-bg-base:     #0d0e14;
+    --cs-bg-surface:  #13151f;
+    --cs-bg-elevated: #1a1d2e;
+    --cs-bg-hover:    #1f2235;
+
+    /* Borders */
+    --cs-border:        rgba(255,255,255,0.07);
+    --cs-border-accent: rgba(255,255,255,0.12);
+
+    /* Brand */
+    --cs-accent:       #5865f2;
+    --cs-accent-hover: #4752c4;
+    --cs-accent-light: rgba(88,101,242,0.15);
+    --cs-accent-glow:  rgba(88,101,242,0.25);
+
+    /* Status */
+    --cs-green:       #3ba55d;
+    --cs-green-light: rgba(59,165,93,0.15);
+    --cs-red:         #ed4245;
+    --cs-red-light:   rgba(237,66,69,0.12);
+
+    /* Text */
+    --cs-text-primary:   #e3e5e8;
+    --cs-text-secondary: #9da3af;
+    --cs-text-muted:     #5c6070;
+
+    /* Bubbles */
+    --cs-bubble-out: #5865f2;
+    --cs-bubble-in:  #1e2030;
+
+    /* Radii */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    /* Conversation column width – Telegram-style centred layout */
+    --cs-msg-max: 680px;
+    --cs-bubble-max: 420px;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--cs-bg-base);
+  color: var(--cs-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto,
+               Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Scrollbars ──────────────────────────────────── */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-border-accent) transparent;
+}
+.custom-scroll::-webkit-scrollbar       { width: 3px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--cs-border-accent);
+  border-radius: 2px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* ── OTP inputs ──────────────────────────────────── */
+.otp-input:focus {
+  outline: none;
+  border-color: var(--cs-accent) !important;
+  box-shadow: 0 0 0 3px var(--cs-accent-glow);
+}
+
+/* ── Presence dot pulse ──────────────────────────── */
+@keyframes presence-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59,165,93,0.45); }
+  50%       { box-shadow: 0 0 0 4px rgba(59,165,93,0); }
+}
+.presence-dot-online { animation: presence-pulse 2.8s ease-in-out infinite; }
+
+/* ── Message entrance ────────────────────────────── */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(5px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+.msg-enter { animation: msg-in 0.16s ease-out both; }
+
+/* ── Typing dots ─────────────────────────────────── */
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%            { transform: translateY(-4px); }
+}
+.typing-dot:nth-child(1) { animation: typing-bounce 1.2s ease-in-out 0.00s infinite; }
+.typing-dot:nth-child(2) { animation: typing-bounce 1.2s ease-in-out 0.15s infinite; }
+.typing-dot:nth-child(3) { animation: typing-bounce 1.2s ease-in-out 0.30s infinite; }
+
+/* ── Textarea auto-grow ──────────────────────────── */
+.cs-textarea {
+  resize: none;
+  overflow-y: hidden;
+  min-height: 38px;
+  max-height: 130px; /* ~5 lines */
+  line-height: 1.5;
+}
+.cs-textarea.scrollable { overflow-y: auto; }
+
+/* ── Image lightbox backdrop ─────────────────────── */
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  backdrop-filter: blur(6px);
+  animation: lb-in 0.18s ease-out both;
+}
+@keyframes lb-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.cs-lightbox img {
+  max-width: min(90vw, 960px);
+  max-height: 88vh;
+  border-radius: 10px;
+  object-fit: contain;
+  cursor: default;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+}
+
+/* ── Shimmer skeleton ────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--cs-bg-elevated) 25%,
+    var(--cs-bg-hover)    50%,
+    var(--cs-bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Focus ring utility ──────────────────────────── */
+.cs-focus:focus-visible {
+  outline: 2px solid var(--cs-accent);
+  outline-offset: 2px;
+}
