@@ -10,13 +10,9 @@ dotenv.config();
 
 export const startSendOtpConsumer = async () => {
   try {
-    const connection = await amqplib.connect({
-      protocol: "amqp",
-      hostname: process.env.Rabbitmq_Host,
-      port: 5672,
-      username: process.env.Rabbitmq_Username,
-      password: process.env.Rabbitmq_Password,
-    });
+    const connection = await amqplib.connect(
+  process.env.RABBITMQ_URL as string
+);
 
     const channel = await connection.createChannel();
 
