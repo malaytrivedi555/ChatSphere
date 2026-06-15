@@ -4,6 +4,13 @@ let channel: amqplib.Channel;
 
 export const connectRabbitMQ = async () => {
   try {
+    console.log("RABBITMQ_URL exists:", !!process.env.RABBITMQ_URL);
+
+console.log(
+  "RABBITMQ_URL starts with:",
+  process.env.RABBITMQ_URL?.slice(0, 8)
+);
+
     const connection = await amqplib.connect(
       process.env.RABBITMQ_URL as string
     );
