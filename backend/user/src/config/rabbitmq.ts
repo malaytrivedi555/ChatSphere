@@ -1,16 +1,12 @@
-import amqplib from 'amqplib'
+import amqplib from "amqplib";
 
 let channel: amqplib.Channel;
 
 export const connectRabbitMQ = async () => {
   try {
-    const connection = await amqplib.connect({
-  protocol: "amqps",
-  hostname: process.env.Rabbitmq_Host,
-  port: 5671,
-  username: process.env.Rabbitmq_Username,
-  password: process.env.Rabbitmq_Password,
-});
+    const connection = await amqplib.connect(
+      process.env.RABBITMQ_URL as string
+    );
 
     channel = await connection.createChannel();
 
@@ -20,15 +16,20 @@ export const connectRabbitMQ = async () => {
   }
 };
 
-export const publishToQueue = async (queueName: string, message: any) => {
+export const publishToQueue = async (
+  queueName: string,
+  message: any
+) => {
   if (!channel) {
-    console.log("Rabbitmq channel is not initalized");
+    console.log("Rabbitmq channel is not initialized");
     return;
   }
 
   await channel.assertQueue(queueName, { durable: true });
 
-  channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)), {
-    persistent: true,
-  });
+  channel.sendToQueue(
+    queueName,
+    Buffer.from(JSON.stringify(message)),
+    { persistent: true }
+  );
 };
