@@ -35,29 +35,38 @@ export const startSendOtpConsumer = async () => {
           return;
         }
 
-          const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true, //for aws
-            auth: {
-              user: process.env.USER,
-              pass: process.env.PASSWORD,
-            },
-          });
+        const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.USER,
+    pass: process.env.PASSWORD,
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
+});
 
-        console.log("About to send mail to:", to);
-        console.log("USER exists:", !!process.env.USER);
-        console.log("PASSWORD exists:", !!process.env.PASSWORD);
+console.log("About to verify SMTP");
 
-        await transporter.sendMail({
-        from: process.env.USER,
-        to,
-        subject: "Your OTP",
-        text: `Your OTP is ${otp}. It is valid for 5 minutes`,
-        });
+await transporter.verify();
 
-      console.log(`OTP mail sent to ${to}`);
-          channel.ack(msg);
+console.log("SMTP verified");
+
+console.log("About to send mail to:", to);
+
+await transporter.sendMail({
+  from: process.env.USER,
+  to,
+  subject: "Your OTP",
+  text: `Your OTP is ${otp}. It is valid for 5 minutes`,
+});
+
+console.log(`OTP mail sent to ${to}`);
+
+channel.ack(msg);  
+
         } catch (error) {
   console.error("Failed to send otp:", error);
 
