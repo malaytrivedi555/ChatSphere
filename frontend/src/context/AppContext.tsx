@@ -12,7 +12,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 export const user_service = "https://chatsphere-user-6ajb.onrender.com";
-export const chat_service = "https://chatsphere-chat.onrender.com";
+export const chat_service = "https://chatsphere-chat-new.onrender.com";
 
 export interface User {
   _id: string;
