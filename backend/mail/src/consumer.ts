@@ -48,11 +48,7 @@ export const startSendOtpConsumer = async () => {
     pass: process.env.SMTP_PASSWORD,
   },
 });
-console.log("About to verify SMTP");
 
-await transporter.verify();
-
-console.log("SMTP verified");
 
 console.log("About to send mail to:", to);
 
