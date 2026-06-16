@@ -69,8 +69,6 @@ await axios.post(
   }
 );
 
-console.log(`OTP mail sent to ${to}`);
-channel.ack(msg);
 
 console.log(`OTP mail sent to ${to}`);
 
