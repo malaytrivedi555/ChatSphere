@@ -45,18 +45,24 @@ export const startSendOtpConsumer = async () => {
             },
           });
 
-          await transporter.sendMail({
-            from: "ChatSphere",
-            to,
-            subject: "Your OTP",
-            text: `Your OTP is ${otp}. It is valid for 5 minutes`,
-          });
+        console.log("About to send mail to:", to);
 
-          console.log(`OTP mail sent to ${to}`);
+        await transporter.sendMail({
+        from: process.env.USER,
+        to,
+        subject: "Your OTP",
+        text: `Your OTP is ${otp}. It is valid for 5 minutes`,
+        });
+
+      console.log(`OTP mail sent to ${to}`);
           channel.ack(msg);
         } catch (error) {
-          console.log("Failed to send otp", error);
-        }
+  console.error("Failed to send otp:", error);
+
+  if (msg) {
+    channel.nack(msg, false, false);
+  }
+}
       }
     });
   } catch (error) {
