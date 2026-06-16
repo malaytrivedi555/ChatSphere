@@ -1,6 +1,10 @@
 import amqplib from 'amqplib';
 
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
+import dns from "dns";
+
+dns.setDefaultResultOrder("ipv4first");
+
 
 import dotenv from "dotenv";
 import { redisClient } from './index.js';
@@ -36,7 +40,10 @@ export const startSendOtpConsumer = async () => {
         }
 
         const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: process.env.USER,
     pass: process.env.PASSWORD,
@@ -45,7 +52,6 @@ export const startSendOtpConsumer = async () => {
   greetingTimeout: 10000,
   socketTimeout: 10000,
 });
-
 console.log("About to verify SMTP");
 
 await transporter.verify();
