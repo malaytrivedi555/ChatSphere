@@ -46,6 +46,8 @@ export const startSendOtpConsumer = async () => {
           });
 
         console.log("About to send mail to:", to);
+        console.log("USER exists:", !!process.env.USER);
+        console.log("PASSWORD exists:", !!process.env.PASSWORD);
 
         await transporter.sendMail({
         from: process.env.USER,
