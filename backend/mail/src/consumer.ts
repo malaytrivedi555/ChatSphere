@@ -40,17 +40,13 @@ export const startSendOtpConsumer = async () => {
         }
 
         const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
-  requireTLS: true,
   auth: {
-    user: process.env.USER,
-    pass: process.env.PASSWORD,
+    user: process.env.SMTP_LOGIN,
+    pass: process.env.SMTP_PASSWORD,
   },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
 });
 console.log("About to verify SMTP");
 
@@ -61,7 +57,7 @@ console.log("SMTP verified");
 console.log("About to send mail to:", to);
 
 await transporter.sendMail({
-  from: process.env.USER,
+  from: "malaytrivedi555@gmail.com",
   to,
   subject: "Your OTP",
   text: `Your OTP is ${otp}. It is valid for 5 minutes`,
