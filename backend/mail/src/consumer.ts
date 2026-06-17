@@ -19,7 +19,23 @@ export const startSendOtpConsumer = async () => {
   process.env.RABBITMQ_URL as string
 );
 
+connection.on("error", (err) => {
+  console.error("RABBITMQ CONNECTION ERROR:", err);
+});
+
+connection.on("close", () => {
+  console.error("RABBITMQ CONNECTION CLOSED");
+});
+
     const channel = await connection.createChannel();
+
+    channel.on("error", (err) => {
+  console.error("RABBITMQ CHANNEL ERROR:", err);
+});
+
+channel.on("close", () => {
+  console.error("RABBITMQ CHANNEL CLOSED");
+});
 
     const queueName = "send-otp";
 
