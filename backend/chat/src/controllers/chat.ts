@@ -77,17 +77,21 @@ export const getAllChats = TryCatch(async (req: AuthenticatedRequest, res) => {
             unseenCount,
           },
         };
-      } catch (error: any) {
-  console.log("USER FETCH ERROR");
-  console.log(error?.response?.data);
-  console.log(error?.response?.status);
-  console.log(error?.message);
+            } catch (error: any) {
+        console.log("USER FETCH ERROR - getAllChats");
+        console.log(error?.response?.data);
+        console.log(error?.response?.status);
+        console.log(error?.message);
 
-  return {
-    user: { _id: otherUserId, name: "Unknown User" },
-    ...
-  };
-}
+        return {
+          user: { _id: otherUserId, name: "Unknown User" },
+          chat: {
+            ...chat.toObject(),
+            latestMessage: chat.latestMessage || null,
+            unseenCount,
+          },
+        };
+      }
     })
   );
 
@@ -322,8 +326,12 @@ export const getMessagesByChat = TryCatch(
         messages,
         user: data,
       });
-    } catch (error) {
-      console.log(error);
+        } catch (error: any) {
+      console.log("USER FETCH ERROR - getMessagesByChat");
+      console.log(error?.response?.data);
+      console.log(error?.response?.status);
+      console.log(error?.message);
+
       res.json({
         messages,
         user: { _id: otherUserId, name: "Unknown User" },
