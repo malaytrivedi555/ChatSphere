@@ -11,12 +11,16 @@ export interface AuthenticatedRequest extends Request {
   user?: IUser | null;
 }
 
+
+
 export const isAuth = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
+    console.log("===== AUTH MIDDLEWARE HIT =====");
+    console.log("Authorization Header:", req.headers.authorization);
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -33,6 +37,9 @@ export const isAuth = async (
       process.env.JWT_SECRET as string
     ) as JwtPayload;
 
+    console.log("JWT VERIFIED");
+    console.log("Decoded Value:", decodedValue);
+
     if (!decodedValue || !decodedValue.user) {
       res.status(401).json({
         message: "Invalid token",
@@ -44,6 +51,7 @@ export const isAuth = async (
 
     next();
   } catch (error) {
+    console.log("JWT ERROR:", error);
     res.status(401).json({
       message: "Please Login - JWT error",
     });

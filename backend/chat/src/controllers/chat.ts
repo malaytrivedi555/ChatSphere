@@ -7,6 +7,9 @@ import { getRecieverSocketId, io } from "../config/socket.js";
 
 export const createNewChat = TryCatch(
   async (req: AuthenticatedRequest, res) => {
+    console.log("===== CREATE NEW CHAT HIT =====");
+console.log("Request Body:", req.body);
+console.log("Authenticated User:", req.user);
     const userId = req.user?._id;
     const { otherUserId } = req.body;
 
