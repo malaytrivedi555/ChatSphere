@@ -77,17 +77,17 @@ export const getAllChats = TryCatch(async (req: AuthenticatedRequest, res) => {
             unseenCount,
           },
         };
-      } catch (error) {
-        console.log(error);
-        return {
-          user: { _id: otherUserId, name: "Unknown User" },
-          chat: {
-            ...chat.toObject(),
-            latestMessage: chat.latestMessage || null,
-            unseenCount,
-          },
-        };
-      }
+      } catch (error: any) {
+  console.log("USER FETCH ERROR");
+  console.log(error?.response?.data);
+  console.log(error?.response?.status);
+  console.log(error?.message);
+
+  return {
+    user: { _id: otherUserId, name: "Unknown User" },
+    ...
+  };
+}
     })
   );
 
