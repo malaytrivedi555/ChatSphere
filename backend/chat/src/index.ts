@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://chat-sphere-ecru-ten.vercel.app/",
+      "https://chat-sphere-ecru-ten.vercel.app",
     ],
     credentials: true,
   })
